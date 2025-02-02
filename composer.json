@@ -1,0 +1,20 @@
+{
+    "name": "isaac/template-os",
+    "description": "Template web",
+    "authors": [
+        {
+            "name": "IsaacEstrada",
+            "email": "isaacestrada168@gmail.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "App\\" : "./",
+            "Controllers\\" : "./controllers",
+            "Model\\" : "./models",
+            "Utils\\" : "./utils",
+            "Core\\" : "./core"
+        }
+    }
+}
