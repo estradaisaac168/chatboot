@@ -2,16 +2,20 @@
 
 namespace Core;
 
-class Mysql extends Conexion
+use PDO;
+
+class Mysql extends Connection
 {
-	private $conexion;
+	private $connection;
 	private $strquery;
 	private $arrValues;
 
 	function __construct()
 	{
-		$this->conexion = new Conexion();
-		$this->conexion = $this->conexion->conect();
+		$this->connection = (new Connection())->conect();
+		if ($this->connection === null) {
+			throw new \Exception('Failed to connect to the database.');
+		}
 	}
 
 	//Insertar un registro
@@ -19,10 +23,14 @@ class Mysql extends Conexion
 	{
 		$this->strquery = $query;
 		$this->arrValues = $arrValues;
-		$insert = $this->conexion->prepare($this->strquery);
-		$resInsert = $insert->execute($this->arrVAlues);
+		if ($this->connection !== null) {
+			$insert = $this->connection->prepare($this->strquery);
+			$resInsert = $insert->execute($this->arrValues);
+		} else {
+			throw new \Exception(getErrorMessage('db_null'));
+		}
 		if ($resInsert) {
-			$lastInsert = $this->conexion->lastInsertId();
+			$lastInsert = $this->connection->lastInsertId();
 		} else {
 			$lastInsert = 0;
 		}
@@ -32,35 +40,55 @@ class Mysql extends Conexion
 	public function select(string $query)
 	{
 		$this->strquery = $query;
-		$result = $this->conexion->prepare($this->strquery);
-		$result->execute();
-		$data = $result->fetch(\PDO::FETCH_ASSOC);
-		return $data;
+		if ($this->connection !== null) {
+			if ($this->connection !== null) {
+				$result = $this->connection->prepare($this->strquery);
+			} else {
+				throw new \Exception(getErrorMessage('db_null'));
+			}
+			$result->execute();
+			$data = $result->fetch(\PDO::FETCH_ASSOC);
+			return $data;
+		} else {
+			throw new \Exception(getErrorMessage('db_null'));
+		}
 	}
 	//Devuelve todos los registros
 	public function select_all(string $query)
 	{
 		$this->strquery = $query;
-		$result = $this->conexion->prepare($this->strquery);
-		$result->execute();
-		$data = $result->fetchall(\PDO::FETCH_ASSOC);
-		return $data;
+		if ($this->connection !== null) {
+			$result = $this->connection->prepare($this->strquery);
+			$result->execute();
+			$data = $result->fetchall(\PDO::FETCH_ASSOC);
+			return $data;
+		} else {
+			throw new \Exception(getErrorMessage('db_null'));
+		}
 	}
 	//Actualiza registros
 	public function update(string $query, array $arrValues)
 	{
 		$this->strquery = $query;
-		$this->arrVAlues = $arrValues;
-		$update = $this->conexion->prepare($this->strquery);
-		$resExecute = $update->execute($this->arrVAlues);
+		$this->arrValues = $arrValues;
+		if ($this->connection !== null) {
+			$update = $this->connection->prepare($this->strquery);
+			$resExecute = $update->execute($this->arrValues);
+		} else {
+			throw new \Exception(getErrorMessage('db_null'));
+		}
 		return $resExecute;
 	}
 	//Eliminar un registros
 	public function delete(string $query)
 	{
 		$this->strquery = $query;
-		$result = $this->conexion->prepare($this->strquery);
-		$del = $result->execute();
-		return $del;
+		if ($this->connection !== null) {
+			$result = $this->connection->prepare($this->strquery);
+			$del = $result->execute();
+			return $del;
+		} else {
+			throw new \Exception(getErrorMessage('db_null'));
+		}
 	}
 }
