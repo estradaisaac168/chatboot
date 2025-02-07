@@ -4,7 +4,7 @@ namespace Controllers;
 
 use Core\Controllers;
 
-class Home extends Controllers
+class HomeController extends Controllers
 {
 
 	protected $views;

@@ -4,7 +4,7 @@ namespace Controllers;
 
 use Core\Controllers;
 
-class Errors extends Controllers
+class ErrorController extends Controllers
 {
 	protected $views;
 
@@ -22,5 +22,5 @@ class Errors extends Controllers
 	}
 }
 
-$notFound = new Errors();
+$notFound = new ErrorController();
 $notFound->notFound();

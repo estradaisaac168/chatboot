@@ -8,12 +8,17 @@ class Views
 	{
 		$controller = get_class($controller);
 
-		$controller = strtolower(str_replace("Controllers\\", "", $controller));
+		// $controller = strtolower(str_replace("Controllers\\", "", $controller));
+
+		$controller = str_replace("controller", "", strtolower(str_replace("Controllers\\", "", $controller)));
+
 
 		if ($controller == "home") {
 			$view = dirname(__DIR__) .  "/views/" . $view . ".php";
 		} else {
+
 			$view = dirname(__DIR__) . "/views/" . $controller . "/" . $view . ".php";
+
 		}
 
 

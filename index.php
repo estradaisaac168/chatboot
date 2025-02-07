@@ -30,8 +30,7 @@ if (!empty($arrUrl[2])) {
 require __DIR__ . '/vendor/autoload.php';
 
 
-$controller = ucwords($controller);
-
+$controller = ucwords($controller) . "Controller";
 
 $controllerFile = __DIR__ . "\controllers/" . $controller . ".php";
 
@@ -44,12 +43,12 @@ if (file_exists($controllerFile)) {
 	$controller = "Controllers\\" . $controller;
 
 	$controller = new $controller();
-	
+
 	if (method_exists($controller, $method)) {
 		$controller->{$method}($params);
 	} else {
-		require_once __DIR__ . "/Controllers/Error.php";
+		require_once __DIR__ . "/Controllers/ErrorController.php";
 	}
 } else {
-	require_once __DIR__ . "/Controllers/Error.php";
+	require_once __DIR__ . "/Controllers/ErrorController.php";
 }
